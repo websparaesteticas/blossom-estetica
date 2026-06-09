@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blossom — Centro de Estética | Nueva Córdoba</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --warm:    #F9F3F0;
+      --blush:   #F0DDD6;
+      --rose:    #C97B6A;
+      --mauve:   #8C5A54;
+      --deep:    #2E1F1F;
+      --mist:    #E8D5CF;
+      --white:   #FFFFFF;
+      --gold:    #C4A068;
+      --radius:  12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--warm);
+      color: var(--deep);
+      line-height: 1.7;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(249, 243, 240, 0.96);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      border-bottom: 1px solid var(--blush);
+    }
+    .nav-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.25em; color: var(--mauve); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Arial', sans-serif; font-size: 0.82rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--deep); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+    .nav-cta {
+      background: var(--mauve); color: var(--white) !important;
+      padding: 0.5rem 1.2rem; border-radius: 40px;
+      font-size: 0.8rem !important; transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--rose) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--deep); border-radius: 2px; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background:
+        linear-gradient(160deg, rgba(249,243,240,0.88) 0%, rgba(240,221,214,0.82) 100%),
+        url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1600&q=80') center/cover no-repeat;
+    }
+    .hero-tag {
+      font-family: 'Arial', sans-serif; font-size: 0.73rem;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1.4rem;
+    }
+    .hero h1 {
+      font-size: clamp(4.5rem, 13vw, 10rem);
+      font-weight: 700; letter-spacing: 0.18em;
+      color: var(--mauve); line-height: 1; margin-bottom: 1.2rem;
+    }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--deep); opacity: 0.75;
+      max-width: 500px; margin: 0 auto 2.5rem;
+    }
+    .btn {
+      display: inline-block; padding: 0.9rem 2.4rem;
+      border-radius: 40px; font-family: 'Arial', sans-serif;
+      font-size: 0.84rem; letter-spacing: 0.14em;
+      text-transform: uppercase; transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--mauve); color: var(--white); }
+    .btn-primary:hover { background: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(140,90,84,0.3); }
+    .btn-outline { border: 1.5px solid var(--mauve); color: var(--mauve); margin-left: 1rem; }
+    .btn-outline:hover { background: var(--mauve); color: var(--white); transform: translateY(-2px); }
+    .btn-rose { background: var(--rose); color: var(--white); }
+    .btn-rose:hover { background: var(--mauve); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,123,106,0.35); }
+    .hero-badges {
+      margin-top: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--white); padding: 0.6rem 1.2rem;
+      border-radius: 40px; font-family: 'Arial', sans-serif;
+      font-size: 0.8rem; color: var(--deep);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .hero-badge.urgency {
+      background: var(--mauve); color: var(--white);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 16px rgba(140,90,84,0.3); }
+      50%       { box-shadow: 0 4px 28px rgba(140,90,84,0.55); }
+    }
+    .stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; }
+
+    /* ── Secciones base ── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Arial', sans-serif; font-size: 0.72rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--deep); margin-bottom: 1.2rem; line-height: 1.2;
+    }
+    .section-intro {
+      font-size: 1.05rem; color: var(--deep); opacity: 0.7;
+      max-width: 560px; margin-bottom: 3.5rem;
+    }
+
+    /* ── Servicios ── */
+    #servicios { background: var(--white); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--warm); border-radius: var(--radius);
+      padding: 2rem 1.8rem; border: 1px solid var(--blush);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 3px; background: var(--blush);
+      transition: background 0.2s;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(140,90,84,0.10); }
+    .service-card:hover::after { background: var(--rose); }
+    .service-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .service-card h3 { font-size: 1.1rem; color: var(--mauve); margin-bottom: 0.5rem; }
+    .service-card p { font-size: 0.9rem; opacity: 0.72; }
+
+    /* ── Por qué elegirnos ── */
+    #porque { background: var(--mauve); color: var(--white); }
+    #porque .section-title { color: var(--white); }
+    #porque .section-label { color: var(--mist); opacity: 0.85; }
+    .porque-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .porque-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      padding: 2rem 1.6rem;
+      transition: background 0.2s;
+    }
+    .porque-item:hover { background: rgba(255,255,255,0.13); }
+    .porque-num {
+      font-size: 2.5rem; font-weight: 700;
+      color: var(--mist); line-height: 1; margin-bottom: 0.8rem;
+    }
+    .porque-item h3 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--blush); }
+    .porque-item p { font-size: 0.88rem; opacity: 0.72; }
+
+    /* ── Nosotros ── */
+    #nosotros { background: var(--warm); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4.5rem; align-items: center;
+    }
+    .about-img { border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-text p { margin-bottom: 1rem; opacity: 0.8; }
+    .about-quote {
+      background: var(--blush); border-left: 3px solid var(--rose);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+      font-style: italic; font-size: 1.05rem;
+    }
+    .about-cta { margin-top: 2rem; }
+
+    /* ── Reseñas ── */
+    #reseñas { background: var(--deep); color: var(--warm); }
+    #reseñas .section-title { color: var(--warm); }
+    #reseñas .section-intro { color: var(--mist); opacity: 1; }
+    #reseñas .section-label { color: var(--gold); }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .review-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius); padding: 1.8rem;
+      transition: background 0.2s;
+    }
+    .review-card:hover { background: rgba(255,255,255,0.09); }
+    .review-stars { color: var(--gold); font-size: 1rem; letter-spacing: 2px; margin-bottom: 1rem; }
+    .review-text { font-size: 0.92rem; opacity: 0.82; margin-bottom: 1.2rem; font-style: italic; line-height: 1.65; }
+    .review-author { font-family: 'Arial', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.45; }
+    .reviews-total {
+      text-align: center; margin-bottom: 3rem;
+      font-family: 'Arial', sans-serif;
+    }
+    .reviews-total .big-num { font-size: 5rem; font-weight: 700; color: var(--blush); line-height: 1; }
+    .reviews-total p { opacity: 0.55; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .reviews-cta { text-align: center; margin-top: 3rem; }
+    .reviews-cta p { opacity: 0.5; margin-bottom: 1rem; font-family: 'Arial', sans-serif; font-size: 0.85rem; }
+
+    /* ── CTA Banner ── */
+    #cta-banner {
+      background: var(--rose); color: var(--white);
+      padding: 4rem 2rem; text-align: center;
+    }
+    #cta-banner h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 0.8rem; }
+    #cta-banner p { opacity: 0.85; font-size: 1.05rem; max-width: 480px; margin: 0 auto 2rem; }
+    .btn-white { background: var(--white); color: var(--rose); }
+    .btn-white:hover { background: var(--warm); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+    /* ── Contacto ── */
+    #contacto { background: var(--blush); }
+    .contact-wrap { max-width: 580px; }
+    .contact-info-text { opacity: 0.75; margin-bottom: 2.5rem; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      margin-bottom: 1.6rem;
+    }
+    .contact-icon { font-size: 1.3rem; margin-top: 2px; }
+    .contact-item strong {
+      display: block; font-size: 0.75rem; font-family: 'Arial', sans-serif;
+      letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 3px;
+    }
+    .contact-item span { font-size: 0.95rem; }
+    .contact-item a { color: var(--mauve); }
+    .contact-item a:hover { color: var(--deep); }
+    .contact-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; }
+    .response-note {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'Arial', sans-serif; font-size: 0.78rem;
+      color: var(--mauve); opacity: 0.75; margin-top: 1rem;
+    }
+
+    /* ── Mapa ── */
+    #mapa { padding: 0; background: var(--deep); }
+    .mapa-header {
+      padding: 3.5rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .mapa-header .section-label { color: var(--gold); margin-bottom: 0.6rem; }
+    .mapa-header h2 { color: var(--warm); font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.5rem; }
+    .mapa-header p { color: var(--mist); opacity: 0.7; font-family: 'Arial', sans-serif; font-size: 0.9rem; }
+    .mapa-container {
+      width: 100%; height: 420px; overflow: hidden;
+      border-top: 2px solid rgba(255,255,255,0.06);
+    }
+    .mapa-container iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ── WhatsApp float ── */
+    .wa-float {
+      position: fixed; bottom: 1.8rem; right: 1.8rem;
+      background: #25D366; color: white;
+      width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+      z-index: 200; transition: transform 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float-label {
+      position: fixed; bottom: 2.2rem; right: 5rem;
+      background: var(--deep); color: var(--white);
+      padding: 0.4rem 0.9rem; border-radius: 40px;
+      font-family: 'Arial', sans-serif; font-size: 0.75rem;
+      white-space: nowrap; z-index: 200;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .wa-float:hover + .wa-float-label { opacity: 1; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--deep); color: var(--mist);
+      padding: 3rem 2rem; text-align: center;
+    }
+    .footer-logo { font-size: 2rem; letter-spacing: 0.25em; color: var(--blush); margin-bottom: 0.4rem; }
+    footer p { font-family: 'Arial', sans-serif; font-size: 0.78rem; opacity: 0.4; margin-top: 0.3rem; }
+    .footer-divider { width: 40px; height: 1px; background: var(--rose); margin: 1rem auto; opacity: 0.4; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 64px; left: 0; width: 100%;
+        background: var(--warm); padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--blush); gap: 1.2rem;
+      }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-img { aspect-ratio: 16/9; }
+      .btn-outline { margin-left: 0; margin-top: 0.8rem; }
+      .contact-ctas { flex-direction: column; }
+      .hero-badges { flex-direction: column; align-items: center; }
+      .mapa-container { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BLOSSOM</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#reseñas">Reseñas</a></li>
+    <li><a href="#contacto" class="nav-cta">Reservar turno</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div>
+    <p class="hero-tag">Centro de Estética · Nueva Córdoba</p>
+    <h1>BLOSSOM</h1>
+    <p class="hero-sub">El centro de estética más reseñado de la zona. Más de 285 clientas satisfechas avalan nuestro trabajo. ¿Sos la próxima?</p>
+    <div>
+      <a href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20reservar%20un%20turno%20en%20Blossom" target="_blank" class="btn btn-primary">Reservar turno ahora</a>
+      <a href="#servicios" class="btn btn-outline">Ver servicios</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <span class="stars">★★★★☆</span>
+        <strong>4.4 · 285 reseñas en Google</strong>
+      </div>
+      <div class="hero-badge urgency">
+        🗓️ <strong>Turnos disponibles esta semana</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="container">
+    <p class="section-label">Lo que hacemos</p>
+    <h2 class="section-title">Tratamientos para cada necesidad</h2>
+    <p class="section-intro">Desde una limpieza facial hasta un tratamiento corporal completo. Todo en un mismo lugar, con la misma dedicación.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">✨</div>
+        <h3>Limpieza Facial</h3>
+        <p>Limpieza profunda y personalizada según tu tipo de piel. Poros limpios, cutis luminoso y renovado desde la primera sesión.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💆</div>
+        <h3>Tratamientos Faciales</h3>
+        <p>Hidratación, anti-edad, manchas y más. Protocolos diseñados específicamente para tu piel y tus objetivos.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌸</div>
+        <h3>Depilación</h3>
+        <p>Servicio prolijo y sin apuros para toda zona, con productos que minimizan la irritación y cuidan tu piel.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🫧</div>
+        <h3>Tratamientos Corporales</h3>
+        <p>Drenaje linfático, reducción de medidas y tonificación. Resultados visibles, no promesas vacías.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💅</div>
+        <h3>Manicuría & Pedicuría</h3>
+        <p>Esmaltado semipermanente, diseño y cuidado integral. Durabilidad y estilo que acompaña tu día a día.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌿</div>
+        <h3>Masajes</h3>
+        <p>Relajantes y descontracturantes. Una hora que vale más que una semana de estrés. Lo vas a notar.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 3rem;">
+      <a href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20consultar%20qu%C3%A9%20servicio%20me%20recomienda%20en%20Blossom" target="_blank" class="btn btn-primary">Consultar qué tratamiento necesito</a>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section id="porque">
+  <div class="container">
+    <p class="section-label">Por qué Blossom</p>
+    <h2 class="section-title" style="color:var(--white); margin-bottom: 3rem;">No somos el único centro de estética.<br>Pero sí el que más te va a gustar.</h2>
+    <div class="porque-grid">
+      <div class="porque-item">
+        <div class="porque-num">285</div>
+        <h3>Reseñas reales</h3>
+        <p>No pedimos que nos puntúen. Nuestras clientas lo hacen solas porque la experiencia vale la pena.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-num">8°</div>
+        <h3>Piso con vista</h3>
+        <p>Un espacio diferente en el corazón de Nueva Córdoba. Llegar ya es parte del ritual.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-num">100%</div>
+        <h3>Atención personalizada</h3>
+        <p>Sin turno apurado, sin atención genérica. Cada clienta tiene su espacio y su tiempo.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-num">✓</div>
+        <h3>Resultados que se ven</h3>
+        <p>Usamos técnicas y productos que realmente funcionan. Porque volvés cuando algo te da resultado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img">
+        <img
+          src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80"
+          alt="Interior Blossom Centro de Estética"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-text">
+        <p class="section-label">Quiénes somos</p>
+        <h2 class="section-title">Un espacio que se siente diferente desde que entrás</h2>
+        <p>Blossom nació con una idea simple: que cada clienta salga sintiéndose mejor de lo que entró. No solo por el tratamiento, sino por toda la experiencia.</p>
+        <div class="about-quote">
+          "El ambiente es increíble y las chicas son muy profesionales. Se nota que aman lo que hacen."
+        </div>
+        <p>Estamos en el piso 8 de Av. Hipólito Yrigoyen, con una vista que ya vale la visita. En Nueva Córdoba, cerca de todo y lejos del ruido.</p>
+        <div class="about-cta">
+          <a href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20reservar%20un%20turno%20en%20Blossom" target="_blank" class="btn btn-primary">Quiero conocerlo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEÑAS -->
+<section id="reseñas">
+  <div class="container">
+    <div class="reviews-total">
+      <div class="big-num">285</div>
+      <p>personas eligieron Blossom y lo contaron</p>
+    </div>
+    <p class="section-label">Lo que dicen nuestras clientas</p>
+    <h2 class="section-title">Las reseñas hablan por nosotras</h2>
+    <p class="section-intro">Cada reseña es una clienta que volvió a casa satisfecha. Estas son algunas de sus palabras.</p>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Excelente atención desde que llegué. El lugar es muy lindo, cómodo y se nota el cuidado en cada detalle. La limpieza facial fue increíble, volveré sin dudas."</p>
+        <div class="review-author">— Valentina G.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Las chicas son un amor, muy prolijas y profesionales. El ambiente te relaja apenas entrás. Ya tengo turno para el mes que viene y se lo recomiendo a todas."</p>
+        <div class="review-author">— Luciana P.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Muy buena atención y el lugar es hermoso. Los tratamientos corporales son excelentes, noto la diferencia desde la primera sesión. Muy contenta."</p>
+        <div class="review-author">— Florencia M.</div>
+      </div>
+    </div>
+    <div class="reviews-cta">
+      <p>Leé las 285 reseñas completas en Google</p>
+      <a href="https://www.google.com/maps/place/Blossom/@-31.4209282,-64.1881754,17z" target="_blank" class="btn btn-rose">Ver todas en Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="cta-banner">
+  <div class="container" style="text-align:center;">
+    <h2>¿Esperás que se llenen los turnos?</h2>
+    <p>Reservá hoy y asegurate tu lugar. Respuesta por WhatsApp en minutos.</p>
+    <a href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20reservar%20un%20turno%20en%20Blossom" target="_blank" class="btn btn-white">💬 Reservar turno por WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-wrap">
+      <p class="section-label">Contacto</p>
+      <h2 class="section-title">Hablemos</h2>
+      <p class="contact-info-text">Escribinos por WhatsApp y te confirmamos el turno al instante. Sin formularios, sin esperas.</p>
+
+      <div class="contact-item">
+        <span class="contact-icon">📍</span>
+        <div>
+          <strong>Dirección</strong>
+          <span>Av. Hipólito Yrigoyen 31, Piso 8 · Nueva Córdoba</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">📞</span>
+        <div>
+          <strong>Teléfono</strong>
+          <span><a href="tel:+5403513848726">0351 384-8726</a></span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">🕐</span>
+        <div>
+          <strong>Horarios</strong>
+          <span>Lunes a viernes: 9:00 – 20:00<br>Sábados: 9:00 – 14:00</span>
+        </div>
+      </div>
+
+      <div class="contact-ctas">
+        <a href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20reservar%20un%20turno%20en%20Blossom" target="_blank" class="btn btn-primary">💬 Escribir por WhatsApp</a>
+        <a href="tel:+5403513848726" class="btn btn-outline">📞 Llamar</a>
+      </div>
+      <p class="response-note">⚡ Respondemos en menos de 1 hora en horario de atención</p>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA -->
+<section id="mapa">
+  <div class="mapa-header">
+    <p class="section-label">Cómo llegar</p>
+    <h2>Av. Hipólito Yrigoyen 31, Piso 8</h2>
+    <p>Nueva Córdoba · Córdoba Capital · Fácil acceso, estacionamiento en la zona</p>
+  </div>
+  <div class="mapa-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.9743019185583!2d-64.19038868484945!3d-31.420928181430917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9432a28f2a4b8c4b%3A0x5e8e5b3b2e2c7f9a!2sAv.%20Hip%C3%B3lito%20Yrigoyen%2031%2C%20X5000%20C%C3%B3rdoba!5e0!3m2!1ses!2sar!4v1700000000000!5m2!1ses!2sar"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Ubicación Blossom — Av. Hipólito Yrigoyen 31, Nueva Córdoba"
+    ></iframe>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">BLOSSOM</div>
+  <div class="footer-divider"></div>
+  <p>Av. Hipólito Yrigoyen 31, Piso 8 · Nueva Córdoba · Córdoba Capital</p>
+  <p style="margin-top: 0.4rem;">© 2024 Blossom Centro de Estética · Todos los derechos reservados</p>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a
+  class="wa-float"
+  href="https://wa.me/5493513848726?text=Hola!%20Quisiera%20reservar%20un%20turno%20en%20Blossom"
+  target="_blank"
+  title="Reservar turno"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.849L.057 23.885a.5.5 0 0 0 .608.633l6.193-1.623A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.813 9.813 0 0 1-5.032-1.383l-.36-.214-3.733.979.997-3.645-.236-.373A9.818 9.818 0 0 1 2.182 12c0-5.413 4.405-9.818 9.818-9.818 5.413 0 9.818 4.405 9.818 9.818 0 5.413-4.405 9.818-9.818 9.818z"/>
+  </svg>
+</a>
+<div class="wa-float-label">Reservar turno</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
